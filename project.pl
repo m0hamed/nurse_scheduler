@@ -10,7 +10,7 @@ solve(Schedule):-
   Num_nurses in 20..100,
   length(Schedule, Num_nurses),
   nurse_constrains(Schedule),
-  %day_constrains(Schedule),
+  day_constrains(Schedule),
   flatten(Schedule, Vars),
   labeling([ff], Vars),
   true.
@@ -21,11 +21,11 @@ nurse_constrains([L|T]):-
   scheduling_days(Days),
   length(L, Days),
   L ins 0..3,
-  %non_successive_shifts(L),
-  %working_hours(L),
+  non_successive_shifts(L),
+  working_hours(L),
   max_day_offs(L),
-  %min_day_offs(L),
-  %no_bridge_days(L),
+  min_day_offs(L),
+  no_bridge_days(L),
   nurse_constrains(T).
 
 day_constrains(L):-
