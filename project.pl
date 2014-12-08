@@ -3,14 +3,14 @@
 :- use_module(library(clpfd)).
 
 % how long the schedule is
-scheduling_days(14).
+scheduling_days(5).
 
 % main predicate
 solve(Schedule):-
   Num_nurses in 20..100,
   length(Schedule, Num_nurses),
   nurse_constrains(Schedule),
-  day_constrains(Schedule),
+  %day_constrains(Schedule),
   flatten(Schedule, Vars),
   labeling([ff], Vars),
   true.
@@ -21,10 +21,11 @@ nurse_constrains([L|T]):-
   scheduling_days(Days),
   length(L, Days),
   L ins 0..3,
-  non_successive_shifts(L),
-  working_hours(L),
+  %non_successive_shifts(L),
+  %working_hours(L),
   max_day_offs(L),
-  min_day_offs(L),
+  %min_day_offs(L),
+  %no_bridge_days(L),
   nurse_constrains(T).
 
 day_constrains(L):-
@@ -75,4 +76,8 @@ max_day_offs([A,B,C,D,E|T]):-
   min_day_offs([B,C,D,E|T]),
   true.
 
+no_bridge_days([_,_]).
+no_bridge_days([H1,H2,H3|T]):-
+  (H1#= 0 #/\ H2#\= 0) #==> H3#\=0,
+  no_bridge_days([H2,H3|T]).
 
